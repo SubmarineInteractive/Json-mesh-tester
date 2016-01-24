@@ -1,5 +1,6 @@
 import Container from 'Container'
-
+import gui from '../Utils/GUI'
+import FolderInspector from '../Utils/FolderInspector'
 /**
  * JsonMesh class
  */
@@ -13,8 +14,12 @@ class JsonMesh {
     this.mesh
     this.mixer
     this.clipMorpher
+    this.gui = gui
     this.loader = new THREE.JSONLoader()
+    // this.folderInspector = new FolderInspector()
     this.clock = Container.get( 'Clock' )
+
+    this.initGUI()
   }
 
   /**
@@ -46,6 +51,17 @@ class JsonMesh {
         reject("error ", e)
       }
     })
+  }
+
+  /**
+   * InitGUI function
+   * @return {void}
+   */
+  initGUI() {
+    // const folder = this.gui.addFolder( 'Mesh' )
+    // folder.add( this, 'active' )
+
+    console.log(this.folderInspector);
   }
 
   /**
