@@ -76,7 +76,7 @@ class Scene extends THREE.Scene {
 
     // Texture loader
     Events.on( 'textureLoader:loading', ( current, total ) =>
-      console.log( `[TextureLoader] Loading ${current}/${total} textures` ))
+    console.log( `[TextureLoader] Loading ${current}/${total} textures` ))
   }
 
   /**
@@ -106,7 +106,7 @@ class Scene extends THREE.Scene {
    */
   render() {
 
-    this.postProcessing.update()
+    // this.postProcessing.update()
   }
 }
 
