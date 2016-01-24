@@ -2,6 +2,8 @@ import Configuration from '../helpers/Configuration'
 import Scene from '../components/Core/Scene'
 import Camera from '../components/Core/Camera'
 import Renderer from '../components/Core/Renderer'
+import HemisphereLight from '../components/Core/HemisphereLight'
+import JsonMesh from '../components/Core/JsonMesh'
 import Clock from '../components/Utils/Clock'
 import GUI from '../components/Utils/GUI'
 import TextureLoader from '../helpers/TextureLoader'
@@ -28,6 +30,16 @@ export default [
     type: 'service',
     name: 'Renderer',
     constructor: Renderer
+  },
+  {
+    type: 'service',
+    name: 'HemisphereLight',
+    constructor: HemisphereLight
+  },
+  {
+    type: 'service',
+    name: 'JsonMesh',
+    constructor: JsonMesh
   },
   {
     type: 'service',

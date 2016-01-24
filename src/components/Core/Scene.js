@@ -32,10 +32,19 @@ class Scene extends THREE.Scene {
 
     // Camera
     this.camera = Container.get( 'Camera' )
+    console.log(this.camera);
     this.add( this.camera )
 
+    // Lights
+    this.hemisphereLight = Container.get( 'HemisphereLight' )
+    this.add( this.hemisphereLight )
+
+    // Add mesh
+    this.mesh = Container.get( 'JsonMesh' )
+    this.add( this.mesh )
+
     // Post processing
-    this.postProcessing = Container.get( 'PostProcessing' )
+    // this.postProcessing = Container.get( 'PostProcessing' )
 
     // Texture loader
     this.textureLoader = Container.get( 'TextureLoader' )
@@ -65,7 +74,6 @@ class Scene extends THREE.Scene {
    * @return {void}
    */
   debug() {
-
     // Axis helper
     const axis = new THREE.AxisHelper( 5 )
     this.add( axis )
@@ -76,7 +84,8 @@ class Scene extends THREE.Scene {
 
     // Texture loader
     Events.on( 'textureLoader:loading', ( current, total ) =>
-    console.log( `[TextureLoader] Loading ${current}/${total} textures` ))
+      console.log( `[TextureLoader] Loading ${current}/${total} textures` ))
+
   }
 
   /**
@@ -105,7 +114,7 @@ class Scene extends THREE.Scene {
    * @return {void}
    */
   render() {
-
+    this.renderer.render( this, this.camera )
     // this.postProcessing.update()
   }
 }
