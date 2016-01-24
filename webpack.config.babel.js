@@ -30,6 +30,9 @@ export default {
       '.json'
     ]
   },
+  node: {
+    fs: "empty"
+  },
   module: {
     loaders: [
       {
