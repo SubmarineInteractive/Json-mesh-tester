@@ -1,0 +1,9 @@
+@import 'variables';
+@import 'reset';
+
+body, #container {
+  background: $color-black;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
