@@ -1,6 +1,7 @@
 import Stats from 'stats.js'
 import raf from 'raf'
 import Container from 'Container'
+import JsonMesh from './JsonMesh'
 import { Events } from 'helpers'
 
 /**
@@ -17,6 +18,7 @@ class Scene extends THREE.Scene {
 
     this.camera
     this.renderer
+    this.meshIsLoaded = false
     this.container   = document.getElementById( 'container' )
   }
 
@@ -40,8 +42,20 @@ class Scene extends THREE.Scene {
     this.add( this.hemisphereLight )
 
     // Add mesh
-    this.mesh = Container.get( 'JsonMesh' )
-    this.add( this.mesh )
+    this.jsonLoaderMesh = new JsonMesh()
+    this.jsonLoaderMesh.loadModel("suzanne").then( () => {
+      const bbox = new THREE.Box3().setFromObject(this.jsonLoaderMesh.mesh)
+
+      this.jsonLoaderMesh.mesh.scale.x = 10
+      this.jsonLoaderMesh.mesh.scale.y = 10
+      this.jsonLoaderMesh.mesh.scale.z = 10
+
+      this.jsonLoaderMesh.mesh.position.y = Math.abs(bbox.min.y) * 10 + 10;
+
+      this.add(this.jsonLoaderMesh.mesh);
+      this.meshIsLoaded = true
+    });
+
 
     // Post processing
     // this.postProcessing = Container.get( 'PostProcessing' )
@@ -75,7 +89,7 @@ class Scene extends THREE.Scene {
    */
   debug() {
     // Axis helper
-    const axis = new THREE.AxisHelper( 5 )
+    const axis = new THREE.AxisHelper( 50 )
     this.add( axis )
 
     // Grid helper
@@ -104,8 +118,12 @@ class Scene extends THREE.Scene {
   animate() {
 
     raf( ::this.animate )
-
     this.stats.update()
+
+    if(this.meshIsLoaded) {
+      this.jsonLoaderMesh.animate()
+    }
+
     this.render()
   }
 
@@ -114,6 +132,7 @@ class Scene extends THREE.Scene {
    * @return {void}
    */
   render() {
+
     this.renderer.render( this, this.camera )
     // this.postProcessing.update()
   }

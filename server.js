@@ -24,7 +24,6 @@ app.use(webpackDevMiddleware(compiler, {
   }
 }))
 
-app.get( '*', (req, res) => res.sendFile( path.join( __dirname, 'index.html' ) ) )
 
 app.listen( port, ip, error => {
   if (error) throw error

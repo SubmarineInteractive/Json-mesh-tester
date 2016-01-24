@@ -5,6 +5,10 @@ import Container from 'Container'
  */
 class HemisphereLight extends THREE.HemisphereLight {
 
+  /**
+   * Constructor function
+   * @return {void}
+   */
   constructor() {
     super(0xffffff, 0xffffff, 0.6);
     this.scene = Container.get('Scene')
