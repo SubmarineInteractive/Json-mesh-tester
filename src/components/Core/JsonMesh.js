@@ -14,10 +14,22 @@ class JsonMesh {
     this.mesh
     this.mixer
     this.clipMorpher
-    this.gui = gui
+    this.currentMesh = 'suzanne'
     this.loader = new THREE.JSONLoader()
     // this.folderInspector = new FolderInspector()
+    this.scene = Container.get( 'Scene' )
     this.clock = Container.get( 'Clock' )
+    this.gui = Container.get( 'GUI' )
+
+
+
+    // GUI Vars
+    this.scale = 10
+    this.animationSpeed = 10
+    this.enableRotation = true
+    this.meshList = ['suzanne', 'suzanne2']
+
+
 
     this.initGUI()
   }
@@ -58,10 +70,34 @@ class JsonMesh {
    * @return {void}
    */
   initGUI() {
-    // const folder = this.gui.addFolder( 'Mesh' )
-    // folder.add( this, 'active' )
 
-    console.log(this.folderInspector);
+    this.gui.add(this, 'currentMesh', this.meshList).onChange((newValue) => {
+      this.scene.meshIsLoaded = false
+      this.scene.remove(this.mesh)
+
+      this.loadModel(newValue).then( () => {
+        const bbox = new THREE.Box3().setFromObject(this.mesh)
+
+        this.mesh.position.y = Math.abs(bbox.min.y) + 20
+        this.mesh.rotation.y = 0
+        this.scene.add(this.mesh);
+        this.scene.meshIsLoaded = true
+
+      });
+
+    });
+
+    this.gui.add(this, 'animationSpeed', 0, 30)
+
+    this.gui.add(this, 'scale', 0.5, 30).onChange((newValue) => {
+      this.mesh.position.y = 0
+
+      const bbox = new THREE.Box3().setFromObject(this.mesh)
+
+      this.mesh.position.y = Math.abs(bbox.min.y) + 20
+    });
+
+    this.gui.add(this, 'enableRotation')
   }
 
   /**
@@ -69,15 +105,17 @@ class JsonMesh {
    * @return {void}
    */
   animate() {
-    const delta = 10 * this.clock.getDelta()
+    const delta = this.animationSpeed * this.clock.getDelta()
 
-    if(this.mesh) {
+    if(this.mesh && this.enableRotation) {
       this.mesh.rotation.y += 0.003
     }
 
     if( this.mixer ) {
-			this.mixer.update( delta );
+			this.mixer.update( delta )
 		}
+
+    this.mesh.scale.set(this.scale, this.scale, this.scale)
   }
 
 }

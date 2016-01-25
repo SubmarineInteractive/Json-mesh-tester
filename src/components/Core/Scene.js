@@ -2,6 +2,7 @@ import Stats from 'stats.js'
 import raf from 'raf'
 import Container from 'Container'
 import JsonMesh from './JsonMesh'
+
 import { Events } from 'helpers'
 
 /**
@@ -44,18 +45,14 @@ class Scene extends THREE.Scene {
     // Add mesh
     this.jsonLoaderMesh = new JsonMesh()
     this.jsonLoaderMesh.loadModel("suzanne").then( () => {
+
       const bbox = new THREE.Box3().setFromObject(this.jsonLoaderMesh.mesh)
 
-      this.jsonLoaderMesh.mesh.scale.x = 10
-      this.jsonLoaderMesh.mesh.scale.y = 10
-      this.jsonLoaderMesh.mesh.scale.z = 10
-
-      this.jsonLoaderMesh.mesh.position.y = Math.abs(bbox.min.y) * 10 + 10;
+      this.jsonLoaderMesh.mesh.position.y = Math.abs(bbox.min.y) 20;
 
       this.add(this.jsonLoaderMesh.mesh);
       this.meshIsLoaded = true
     });
-
 
     // Post processing
     // this.postProcessing = Container.get( 'PostProcessing' )
