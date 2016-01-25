@@ -5,6 +5,13 @@
     <title>Abyss JSON Mesh Loader</title>
 </head>
 <body>
-  <div id="container"></div>
+  <div id="container">
+
+    <form class="form" action="/api/v1/mesh" method="post" enctype="multipart/form-data">
+      <input class="form__file-input" type="file" name="mesh" required/>
+
+      <input class="form__submit-input" type="submit" value="Upload">
+    </form>
+  </div>
 </body>
 </html>

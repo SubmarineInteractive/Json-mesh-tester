@@ -4,6 +4,7 @@ import Camera from '../components/Core/Camera'
 import Renderer from '../components/Core/Renderer'
 import HemisphereLight from '../components/Core/HemisphereLight'
 import JsonMesh from '../components/Core/JsonMesh'
+import UploadForm from '../components/Core/UploadForm'
 import Clock from '../components/Utils/Clock'
 import GUI from '../components/Utils/GUI'
 import TextureLoader from '../helpers/TextureLoader'
@@ -50,6 +51,11 @@ export default [
     type: 'service',
     name: 'GUI',
     constructor: GUI
+  },
+  {
+    type: 'service',
+    name: 'UploadForm',
+    constructor: UploadForm
   },
   {
     type: 'service',

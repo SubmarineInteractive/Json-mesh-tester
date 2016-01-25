@@ -44,7 +44,7 @@ class JsonMesh {
   getMeshesList() {
     return new Promise((resolve, reject) => {
       const req = new XMLHttpRequest()
-      const URL = '/api/v1/meshes'
+      const URL = '/api/v1/mesh'
 
       req.open('GET', URL)
 
@@ -107,10 +107,11 @@ class JsonMesh {
     folder.open();
 
     folder.add(this, 'currentMesh', this.meshList).onChange((newValue) => {
+      this.currentMesh = newValue
       this.scene.meshIsLoaded = false
       this.scene.remove(this.mesh)
 
-      this.loadModel(newValue).then( () => {
+      this.loadModel(this.currentMesh).then( () => {
         const bbox = new THREE.Box3().setFromObject(this.mesh)
 
         this.mesh.position.y = Math.abs(bbox.min.y) + 20
@@ -135,6 +136,22 @@ class JsonMesh {
     folder.add(this, 'enableAnimation')
     folder.add(this, 'enableRotation')
   }
+
+  /**
+   * Refresh mesh list
+   * @return {void}
+   */
+   refreshMeshList() {
+    //  this.getMeshesList().then( (response) => {
+    //    console.log("Refresh mesh list :", response)
+    //    this.meshList = JSON.parse(response);
+     //
+    //    this.gui.__folders.Mesh.__controllers[0].updateDisplay()
+     //
+    //  }, (error) => {
+    //    console.error("Error refresh mesh list", error);
+    //  });
+   }
 
   /**
    * Animation call by raf

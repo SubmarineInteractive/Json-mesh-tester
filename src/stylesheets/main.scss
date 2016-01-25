@@ -1,8 +1,24 @@
 @import 'variables';
 @import 'reset';
 
+html {
+  font-size: 62.5%;
+}
 body, #container {
   max-width: 100%;
   max-height: 100%;
   overflow: hidden;
+}
+
+.form {
+  position: absolute;
+  left: 2rem;
+  bottom: 2rem;
+  color: $color-white;
+
+  input {
+    display: block;
+    margin-top: 1rem;
+
+  }
 }
