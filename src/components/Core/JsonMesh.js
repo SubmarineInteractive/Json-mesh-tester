@@ -1,6 +1,6 @@
 import Container from 'Container'
 import gui from '../Utils/GUI'
-import FolderInspector from '../Utils/FolderInspector'
+
 /**
  * JsonMesh class
  */
@@ -26,11 +26,44 @@ class JsonMesh {
     this.animationSpeed = 10
     this.enableRotation = true
     this.enableAnimation = true
-    this.meshList = ['suzanne', 'suzanne2']
 
+    this.getMeshesList().then( (response) => {
+      console.log("Succès !", response)
+      this.meshList = JSON.parse(response);
+      this.initGUI()
+    }, (error) => {
+      console.error("Error !", error);
+    });
 
+  }
 
-    this.initGUI()
+  /**
+   * Get Meshes List
+   * @return {promise} - Promise containing meshes list
+   */
+  getMeshesList() {
+    return new Promise((resolve, reject) => {
+      const req = new XMLHttpRequest()
+      const URL = '/api/v1/meshes'
+
+      req.open('GET', URL)
+
+      req.onload = () => {
+        if (req.status === 200) {
+          resolve(req.response)
+        }
+        else {
+          console.log('error')
+          reject(Error(req.statusText))
+        }
+      };
+
+      req.onerror = () => {
+        reject(Error("Error"))
+      };
+
+      req.send()
+    })
   }
 
   /**
@@ -44,7 +77,7 @@ class JsonMesh {
 
     return new Promise((resolve, reject) => {
       try {
-        this.loader.load( "../models/" + model + ".json", ( geometry, materials ) => {
+        this.loader.load( "../models/" + model, ( geometry, materials ) => {
             this.mesh = new THREE.Mesh( geometry,  materials[0] )
 
             this.mesh.material.morphTargets = true;

@@ -45,7 +45,7 @@ class Scene extends THREE.Scene {
 
     // Add mesh
     this.jsonLoaderMesh = new JsonMesh()
-    this.jsonLoaderMesh.loadModel("suzanne").then( () => {
+    this.jsonLoaderMesh.loadModel("suzanne.json").then( () => {
 
       const bbox = new THREE.Box3().setFromObject(this.jsonLoaderMesh.mesh)
 

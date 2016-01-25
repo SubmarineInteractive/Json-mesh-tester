@@ -6,7 +6,6 @@ import HemisphereLight from '../components/Core/HemisphereLight'
 import JsonMesh from '../components/Core/JsonMesh'
 import Clock from '../components/Utils/Clock'
 import GUI from '../components/Utils/GUI'
-import FolderInspector from '../components/Utils/FolderInspector'
 import TextureLoader from '../helpers/TextureLoader'
 
 export default [
@@ -51,11 +50,6 @@ export default [
     type: 'service',
     name: 'GUI',
     constructor: GUI
-  },
-  {
-    type: 'service',
-    name: 'FolderInspector',
-    constructor: FolderInspector
   },
   {
     type: 'service',
