@@ -16,10 +16,11 @@ class JsonMesh {
     this.clipMorpher
     this.currentMesh = 'suzanne'
     this.loader = new THREE.JSONLoader()
-    // this.folderInspector = new FolderInspector()
-    this.scene = Container.get( 'Scene' )
-    this.clock = Container.get( 'Clock' )
-    this.gui = Container.get( 'GUI' )
+      // this.folderInspector = new FolderInspector()
+    this.scene = Container.get('Scene')
+    this.clock = Container.get('Clock')
+    this.gui = Container.get('GUI')
+    this.guiIsInit = false;
 
     // GUI Vars
     this.scale = 10
@@ -27,13 +28,14 @@ class JsonMesh {
     this.enableRotation = true
     this.enableAnimation = true
 
-    this.getMeshesList().then( (response) => {
+    this.getMeshesList().then((response) => {
       console.log("Succès !", response)
-      this.meshList = JSON.parse(response);
-      this.initGUI()
+      this.meshList = JSON.parse(response)
+
+        this.initGUI()
     }, (error) => {
-      console.error("Error !", error);
-    });
+      console.error("Error !", error)
+    })
 
   }
 
@@ -51,8 +53,7 @@ class JsonMesh {
       req.onload = () => {
         if (req.status === 200) {
           resolve(req.response)
-        }
-        else {
+        } else {
           console.log('error')
           reject(Error(req.statusText))
         }
@@ -77,20 +78,20 @@ class JsonMesh {
 
     return new Promise((resolve, reject) => {
       try {
-        this.loader.load( "../models/" + model, ( geometry, materials ) => {
-            this.mesh = new THREE.Mesh( geometry,  materials[0] )
+        this.loader.load("../models/" + model, (geometry, materials) => {
+          this.mesh = new THREE.Mesh(geometry, materials[0])
 
-            this.mesh.material.morphTargets = true;
-            this.mesh.material.verticesNeedUpdate = true;
-            this.mesh.material.normalsNeedUpdate = true;
+          this.mesh.material.morphTargets = true;
+          this.mesh.material.verticesNeedUpdate = true;
+          this.mesh.material.normalsNeedUpdate = true;
 
-            this.clipMorpher = THREE.AnimationClip.CreateFromMorphTargetSequence( 'animation_', this.mesh.geometry.morphTargets, 25 )
+          this.clipMorpher = THREE.AnimationClip.CreateFromMorphTargetSequence('animation_', this.mesh.geometry.morphTargets, 25)
 
-    				this.mixer = new THREE.AnimationMixer( this.mesh )
-    				this.mixer.addAction( new THREE.AnimationAction( this.clipMorpher ) )
+          this.mixer = new THREE.AnimationMixer(this.mesh)
+          this.mixer.addAction(new THREE.AnimationAction(this.clipMorpher))
 
-            resolve(this.mesh)
-    		})
+          resolve(this.mesh)
+        })
       } catch (e) {
         reject("error ", e)
       }
@@ -102,56 +103,73 @@ class JsonMesh {
    * @return {void}
    */
   initGUI() {
+    this.folder = this.gui.addFolder('Mesh')
 
-    const folder = this.gui.addFolder('Mesh');
-    folder.open();
+    this.folder.open()
 
-    folder.add(this, 'currentMesh', this.meshList).onChange((newValue) => {
+    this.folder.add(this, 'currentMesh', this.meshList).onChange((newValue) => {
       this.currentMesh = newValue
       this.scene.meshIsLoaded = false
       this.scene.remove(this.mesh)
 
-      this.loadModel(this.currentMesh).then( () => {
+      this.loadModel(this.currentMesh).then(() => {
         const bbox = new THREE.Box3().setFromObject(this.mesh)
 
         this.mesh.position.y = Math.abs(bbox.min.y) + 20
         this.mesh.rotation.y = 0
-        this.scene.add(this.mesh);
+        this.scene.add(this.mesh)
         this.scene.meshIsLoaded = true
 
-      });
+      })
 
-    });
+    })
 
-    folder.add(this, 'animationSpeed', 0, 30)
+    this.folder.add(this, 'animationSpeed', 0, 30)
 
-    folder.add(this, 'scale', 0.5, 30).onChange((newValue) => {
+    this.folder.add(this, 'scale', 0.5, 30).onChange((newValue) => {
       this.mesh.position.y = 0
 
       const bbox = new THREE.Box3().setFromObject(this.mesh)
 
       this.mesh.position.y = Math.abs(bbox.min.y) + 20
-    });
+    })
 
-    folder.add(this, 'enableAnimation')
-    folder.add(this, 'enableRotation')
+    this.folder.add(this, 'enableAnimation')
+    this.folder.add(this, 'enableRotation')
+
+    this.guiIsInit = true
   }
 
   /**
-   * Refresh mesh list
+   * destroyGUI function
    * @return {void}
    */
-   refreshMeshList() {
-    //  this.getMeshesList().then( (response) => {
-    //    console.log("Refresh mesh list :", response)
-    //    this.meshList = JSON.parse(response);
-     //
-    //    this.gui.__folders.Mesh.__controllers[0].updateDisplay()
-     //
-    //  }, (error) => {
-    //    console.error("Error refresh mesh list", error);
-    //  });
-   }
+  destroyGUI() {
+    this.gui.removeFolder('Mesh');
+  }
+
+  /**
+   * Update mesh list
+   * @return {void}
+   */
+  updateMeshList() {
+    console.info('update mesh list')
+
+    this.getMeshesList().then((response) => {
+      console.log("Success !", response)
+
+      this.meshList = JSON.parse(response)
+
+      for (let i in this.gui.__controllers) {
+        this.gui.__controllers[i].updateDisplay()
+      }
+
+      this.folder.open()
+    }, (error) => {
+      console.error("Error !", error)
+    })
+
+  }
 
   /**
    * Animation call by raf
@@ -160,13 +178,13 @@ class JsonMesh {
   animate() {
     const delta = this.animationSpeed * this.clock.getDelta()
 
-    if(this.mesh && this.enableRotation) {
+    if (this.mesh && this.enableRotation) {
       this.mesh.rotation.y += 0.003
     }
 
-    if( this.mixer && this.enableAnimation) {
-			this.mixer.update( delta )
-		}
+    if (this.mixer && this.enableAnimation) {
+      this.mixer.update(delta)
+    }
 
     this.mesh.scale.set(this.scale, this.scale, this.scale)
   }

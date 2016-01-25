@@ -1,7 +1,6 @@
 import Stats from 'stats.js'
 import raf from 'raf'
 import Container from 'Container'
-import JsonMesh from './JsonMesh'
 
 import { Events } from 'helpers'
 
@@ -20,7 +19,7 @@ class Scene extends THREE.Scene {
     this.camera
     this.renderer
     this.meshIsLoaded = false
-    this.container   = document.getElementById( 'container' )
+    this.container = document.getElementById('container')
 
   }
 
@@ -30,22 +29,22 @@ class Scene extends THREE.Scene {
    */
   begin() {
 
-     // Renderer
-    this.renderer = Container.get( 'Renderer' )
-    this.container.appendChild( this.renderer.domElement )
+    // Renderer
+    this.renderer = Container.get('Renderer')
+    this.container.appendChild(this.renderer.domElement)
 
     // Camera
-    this.camera = Container.get( 'Camera' )
+    this.camera = Container.get('Camera')
     console.log(this.camera);
-    this.add( this.camera )
+    this.add(this.camera)
 
     // Lights
-    this.hemisphereLight = Container.get( 'HemisphereLight' )
-    this.add( this.hemisphereLight )
+    this.hemisphereLight = Container.get('HemisphereLight')
+    this.add(this.hemisphereLight)
 
     // Add mesh
-    this.jsonLoaderMesh = new JsonMesh()
-    this.jsonLoaderMesh.loadModel("suzanne.json").then( () => {
+    this.jsonLoaderMesh = Container.get('JsonMesh')
+    this.jsonLoaderMesh.loadModel("suzanne.json").then(() => {
 
       const bbox = new THREE.Box3().setFromObject(this.jsonLoaderMesh.mesh)
 
@@ -59,24 +58,24 @@ class Scene extends THREE.Scene {
     // this.postProcessing = Container.get( 'PostProcessing' )
 
     // Texture loader
-    this.textureLoader = Container.get( 'TextureLoader' )
+    this.textureLoader = Container.get('TextureLoader')
 
     // Utils
-    this.clock = Container.get( 'Clock' )
+    this.clock = Container.get('Clock')
 
     // Stats
     this.stats = new Stats()
     this.stats.domElement.style.position = 'absolute'
     this.stats.domElement.style.top = '0'
-    this.container.appendChild( this.stats.domElement )
+    this.container.appendChild(this.stats.domElement)
 
     // Create scene when textures are loaded
     this.textureLoader
       .init()
-      .then( ::this.createScene )
+      .then(::this.createScene)
 
     // Debug helpers
-    if( __DEV__ ) {
+    if (__DEV__) {
       this.debug()
     }
   }
@@ -87,16 +86,16 @@ class Scene extends THREE.Scene {
    */
   debug() {
     // Axis helper
-    const axis = new THREE.AxisHelper( 50 )
-    this.add( axis )
+    const axis = new THREE.AxisHelper(50)
+    this.add(axis)
 
     // Grid helper
-    const gridHelper = new THREE.GridHelper( 65, 1 )
-    this.add( gridHelper )
+    const gridHelper = new THREE.GridHelper(65, 1)
+    this.add(gridHelper)
 
     // Texture loader
-    Events.on( 'textureLoader:loading', ( current, total ) =>
-      console.log( `[TextureLoader] Loading ${current}/${total} textures` ))
+    Events.on('textureLoader:loading', (current, total) =>
+      console.log(`[TextureLoader] Loading ${current}/${total} textures`))
 
   }
 
@@ -115,10 +114,10 @@ class Scene extends THREE.Scene {
    */
   animate() {
 
-    raf( ::this.animate )
+    raf(::this.animate)
     this.stats.update()
 
-    if(this.meshIsLoaded) {
+    if (this.meshIsLoaded) {
       this.jsonLoaderMesh.animate()
     }
 
@@ -131,8 +130,8 @@ class Scene extends THREE.Scene {
    */
   render() {
 
-    this.renderer.render( this, this.camera )
-    // this.postProcessing.update()
+    this.renderer.render(this, this.camera)
+      // this.postProcessing.update()
   }
 }
 

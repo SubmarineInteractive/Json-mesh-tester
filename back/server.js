@@ -46,7 +46,15 @@ app.get('/api/v1/mesh', getMesh);
  * Get meshes list
  */
 app.post('/api/v1/mesh', upload.single('mesh'), (req, res, next)=> {
-  console.log('hey mais ta race ?')
+
+  console.log('req.file', req.file);
+
+  if(typeof req.file !== "undefined") {
+    res.status(200).send('Upload done !')
+  } else {
+    res.status(500).send('Something goes wrong =(')
+  }
+
 });
 
 
