@@ -10,7 +10,7 @@ class HemisphereLight extends THREE.HemisphereLight {
    * @return {void}
    */
   constructor() {
-    super(0xffffff, 0xffffff, 0.6);
+    super(0xffffff, 0xffffff, 1.3);
     this.scene = Container.get('Scene')
     this.color.setHSL( 0.6, 1, 0.6 )
     this.groundColor.setHSL( 0.095, 1, 0.75 )
