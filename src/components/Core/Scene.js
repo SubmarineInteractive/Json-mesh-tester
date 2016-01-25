@@ -21,6 +21,7 @@ class Scene extends THREE.Scene {
     this.renderer
     this.meshIsLoaded = false
     this.container   = document.getElementById( 'container' )
+
   }
 
   /**
@@ -48,7 +49,7 @@ class Scene extends THREE.Scene {
 
       const bbox = new THREE.Box3().setFromObject(this.jsonLoaderMesh.mesh)
 
-      this.jsonLoaderMesh.mesh.position.y = Math.abs(bbox.min.y) 20;
+      this.jsonLoaderMesh.mesh.position.y = Math.abs(bbox.min.y) + 20;
 
       this.add(this.jsonLoaderMesh.mesh);
       this.meshIsLoaded = true
@@ -90,7 +91,7 @@ class Scene extends THREE.Scene {
     this.add( axis )
 
     // Grid helper
-    const gridHelper = new THREE.GridHelper( 50, 1 )
+    const gridHelper = new THREE.GridHelper( 65, 1 )
     this.add( gridHelper )
 
     // Texture loader

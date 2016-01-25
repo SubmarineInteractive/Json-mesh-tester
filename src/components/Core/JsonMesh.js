@@ -21,12 +21,11 @@ class JsonMesh {
     this.clock = Container.get( 'Clock' )
     this.gui = Container.get( 'GUI' )
 
-
-
     // GUI Vars
     this.scale = 10
     this.animationSpeed = 10
     this.enableRotation = true
+    this.enableAnimation = true
     this.meshList = ['suzanne', 'suzanne2']
 
 
@@ -71,7 +70,10 @@ class JsonMesh {
    */
   initGUI() {
 
-    this.gui.add(this, 'currentMesh', this.meshList).onChange((newValue) => {
+    const folder = this.gui.addFolder('Mesh');
+    folder.open();
+
+    folder.add(this, 'currentMesh', this.meshList).onChange((newValue) => {
       this.scene.meshIsLoaded = false
       this.scene.remove(this.mesh)
 
@@ -87,9 +89,9 @@ class JsonMesh {
 
     });
 
-    this.gui.add(this, 'animationSpeed', 0, 30)
+    folder.add(this, 'animationSpeed', 0, 30)
 
-    this.gui.add(this, 'scale', 0.5, 30).onChange((newValue) => {
+    folder.add(this, 'scale', 0.5, 30).onChange((newValue) => {
       this.mesh.position.y = 0
 
       const bbox = new THREE.Box3().setFromObject(this.mesh)
@@ -97,7 +99,8 @@ class JsonMesh {
       this.mesh.position.y = Math.abs(bbox.min.y) + 20
     });
 
-    this.gui.add(this, 'enableRotation')
+    folder.add(this, 'enableAnimation')
+    folder.add(this, 'enableRotation')
   }
 
   /**
@@ -111,7 +114,7 @@ class JsonMesh {
       this.mesh.rotation.y += 0.003
     }
 
-    if( this.mixer ) {
+    if( this.mixer && this.enableAnimation) {
 			this.mixer.update( delta )
 		}
 
