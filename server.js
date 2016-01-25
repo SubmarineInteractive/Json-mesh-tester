@@ -1,4 +1,5 @@
 import path from 'path'
+import fs from 'fs'
 import express from 'express'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
@@ -23,6 +24,24 @@ app.use(webpackDevMiddleware(compiler, {
     modules: false
   }
 }))
+
+app.route('/api/v1/meshes')
+  .get(function(req, res) {
+    const meshesPath = './static/models/'
+    let meshesList = [];
+
+    fs.readdir(meshesPath, (err, items) => {
+
+      for (let i = 0; i < items.length; i++) {
+        if(items[i].endsWith(".json")) {
+          meshesList.push(items[i])
+        }
+      }
+
+      res.send(JSON.stringify(meshesList));
+
+    })
+  })
 
 
 app.listen( port, ip, error => {
