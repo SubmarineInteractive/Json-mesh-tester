@@ -4,7 +4,7 @@
   "description": "Gobelins school project",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development babel-node server",
+    "start": "NODE_ENV=development babel-node ./back/server",
     "build": "NODE_ENV=production webpack --config webpack.config.babel.prod.js -p",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -62,6 +62,7 @@
     "lodash.get": "^4.0.0",
     "lodash.set": "^4.0.0",
     "minivents": "^2.0.1",
+    "multer": "^1.1.0",
     "node-sass": "^3.4.2",
     "raf": "^3.1.0",
     "replace": "^0.3.0",
