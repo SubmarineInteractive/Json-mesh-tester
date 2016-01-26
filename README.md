@@ -4,8 +4,10 @@ A tool for testing json mesh import in three and see how behaves clip animations
 
 *A tool developed for the Abyss project by two nice developers for their two loved designers.*
 
+![Gif](http://meshtester.hengpatrick.fr/preview.gif)
 
-#### TEAM
+
+#### Team
 | Nom                 |  Role                |
 | ------------------- | -------------------- |
 | Jantana Hennard     | [Interactive designer](http://twitter.com/yesverynice)     |
@@ -35,5 +37,3 @@ Use the upload input on the bottom left corner. Your mesh will be save in the */
 Use the dat.GUI panel on the top right corner to play with lights and meshes animation.
 
 Hope you like it ¯\_(ツ)_/¯
-
-![Gif](http://meshtester.hengpatrick.fr/preview.gif)
